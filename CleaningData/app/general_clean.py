@@ -19,7 +19,6 @@ from CleaningData.app.cleaners.combus import Combustible
 from CleaningData.app.cleaners.fasecol import tf_idf_assign
 from CleaningData.app.cleaners.marcalinea import MarcaLinea
 from CleaningData.app.macroecono.trm import TRM
-from CleaningData.config.sqlacces import connection_str
 from CleaningData.app.cleaners.gamas import Gamas
 from CleaningData.app.cleaners.motos import Motos
 from CleaningData.app.cleaners.location import Location

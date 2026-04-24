@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine, text
 import pandas as pd
-from CleaningData.config.sqlacces import connection_str_dw_fz, connection_str
+from CleaningData.config.sqlacces import connection_str_dw_fz
 
 class Combustible:
 

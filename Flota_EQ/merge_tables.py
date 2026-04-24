@@ -4,7 +4,7 @@ import numpy as np
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from CleaningData.config.sqlacces import connection_str, connection_str_dw_fz
+from CleaningData.config.sqlacces import  connection_str_dw_fz
 
 
 # SQL --------------------------------------------------------------------------------------------------------

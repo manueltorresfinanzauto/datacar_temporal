@@ -1,6 +1,6 @@
 import pandas as pd 
 import numpy as np
-from procesar.sqlacces import connection_windows_dw_fz as connection_str
+from procesar.sqlacces import connection_windows_dw_fz
 from sqlalchemy import create_engine, text
 from datetime import datetime
 import re
@@ -17,7 +17,7 @@ class Gamas:
     @staticmethod
     def call_df_gama():
         # df_g = pd.read_excel('CleaningData/app/cleaners/Gamas.xlsx', sheet_name='Gamas 343')
-        connect_str: str = connection_str
+        connect_str: str = connection_windows_dw_fz
         engine = create_engine(connect_str)
         query = 'SELECT * FROM [Analitica].[pri].[Gamas]'
         df_g = pd.read_sql(query, engine)
@@ -124,7 +124,7 @@ class Demanda:
             df_merged (pd.DataFrame): Input DataFrame with N columns.
         """
         # Marca = Marca.upper(); Linea = Linea.upper()
-        connect_str: str = connection_str
+        connect_str: str = connection_windows_dw_fz
         engine = create_engine(connect_str)
         query = cls._query_sql()
         print('-------------------........................ calling the query')
@@ -204,7 +204,7 @@ def remplace(text: str):
 def location_punish(df):
         
         # df_pu = pd.read_csv('CleaningData/app/cleaners/municipios_punishment.csv')
-        connect_str: str = connection_str
+        connect_str: str = connection_windows_dw_fz
         engine = create_engine(connect_str)
         query = "SELECT * FROM [Analitica].[pri].[municipios_punishment]"
         df_pu = pd.read_sql(query, engine)

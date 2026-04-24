@@ -8,7 +8,6 @@ from tqdm import tqdm, tqdm_pandas
 import re
 import unicodedata
 from tqdm import tqdm
-from config.sqlacces import connection_str
 from app.cleaners.motos import Motos
 
 
