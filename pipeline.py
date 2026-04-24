@@ -17,8 +17,9 @@ def pipe(brdp: bool=True, ruta_file: str = None):
         # print(nombre)
     else:
 
-        df1 = main_datacarro(ruta_file, df_o=df_perito, ruta=True)
+        df1 = main_datacarro(ruta_file, df_o=None, ruta=True)
 
 
 if __name__ == '__main__':
-    pipe()
+    # pipe()
+    pipe(brdp=False, ruta_file='brdp_24_04_2026.xlsx')

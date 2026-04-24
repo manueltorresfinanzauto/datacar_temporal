@@ -8,6 +8,7 @@ from modelos_prueba.columns_check import columns_for_pricing
 from CleaningData.app.cleaners.motos import Motos
 from CleaningData.clean_main import clean_total 
 import platform
+from pathlib import Path
 
 def main_datacarro(nombre : str, df_o, ruta):
     start = time.time()
@@ -78,13 +79,18 @@ def main_datacarro(nombre : str, df_o, ruta):
     df['Version_DataCarro'] = 'V_1.5.0.07-10-2025'
     print(df.shape)
     
-
-    df.to_excel(rf'RF_{nombre}.xlsx')
-    from pathlib import Path
+    nombre_short = nombre[:-5]
+    df_s = df[['Placa', 'Precio_DataCarro', 'Precio_Maximo', 'Precio_Minimo', 'Cod_fasecolda', 'Fecha_Precio_DataCarro', 'Version_DataCarro']]
+    df.to_excel(rf'RF_{nombre_short}.xlsx')
+    ruta_completa = Path(f'RF_{nombre_short}.xlsx').resolve()
+    print(f" Archivo guardado en: {ruta_completa}")
+   
     end = time.time()
 
     print(f"Execution time: {end - start:.2f} seconds")
-    return df
+
+
+    return 
 
 
 

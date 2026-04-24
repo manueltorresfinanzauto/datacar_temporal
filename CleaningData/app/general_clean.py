@@ -9,6 +9,7 @@ import re
 import unicodedata
 from tqdm import tqdm
 import numpy as np
+import unicodedata
 # Personal 
 from CleaningData.app.cleaners.damage import VehicleDamage  
 from CleaningData.app.Simul.simulate import Simulation_p_k, mean_km_f
@@ -117,11 +118,14 @@ def combu(df):
         Combustible.combus_number(df)
         return df
     
-
+def limpiar_texto(texto):
+    texto = unicodedata.normalize('NFD', texto)
+    texto = texto.encode('ascii', 'ignore').decode("utf-8")
+    return texto.lower().capitalize()
 
 def max_cleaner(df):
     
-    df.columns = [col.lower().capitalize() for col in df.columns]
+    df.columns = [limpiar_texto(col) for col in df.columns]
 
      # Diccionario de mapeo de nombres de columna
     column_map = {
@@ -131,7 +135,8 @@ def max_cleaner(df):
         'Pricing': ['Precio', 'PRECIO VENTA', 'PRECIO_VENTA', 'PRECIO_VENTA', 'Precio_venta', 'Precio venta'], 
         'Descripcion' : ['Observaciones'], 
         'Estado_vehiculo' : ['Estado', 'Estado_venta'],
-        'Modelo' : ['ANIO_MODELO', 'ANIO MODELO', 'Anio_modelo', 'Anio modelo']
+        'Modelo' : ['ANIO_MODELO', 'ANIO MODELO', 'Anio_modelo', 'Anio modelo'],
+        'Ubicacion' : ['Ciudade matricula', 'ciudad de matricula']
     }
     print(df.shape)
     # Renombrar columnas basadas en los posibles nombres
