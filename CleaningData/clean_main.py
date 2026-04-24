@@ -66,9 +66,13 @@ def main():
     df = max_cleaner(df)
     df.to_csv('../brdp_15_05_clean.csv', index=False)
 
-def clean_total(path_f, name_out, Asousados = False, ubicacion_doble=False, save_csv=True):
+def clean_total(path_f, name_out, df_o, ruta = True, Asousados = False, ubicacion_doble=False, save_csv=True):
 
-    df = pd.read_excel(path_f)
+    if ruta:
+        df = pd.read_excel(path_f)
+    else:
+        df = df_o
+        
     if 'Valor alistamiento' in df.columns:
         df['Observaciones'] = df['Observaciones'] + ' ' + df['Valor alistamiento'].astype(str)
     if Asousados: 

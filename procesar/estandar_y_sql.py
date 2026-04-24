@@ -1,6 +1,6 @@
 import pandas as pd 
 import numpy as np
-from config.sqlacces import connection_windows_dw_fz as connection_str
+from procesar.sqlacces import connection_windows_dw_fz as connection_str
 from sqlalchemy import create_engine, text
 from datetime import datetime
 import re
@@ -10,8 +10,6 @@ from unidecode import unidecode
 import pandas as pd
 from sqlalchemy import create_engine
 import pyodbc
-
-
 
 
 class Gamas:
@@ -354,67 +352,70 @@ list2 = ['Fecha', 'Inspeccionado por', 'document',  'Ubicación Vehículo', 'Ori
 dic_col = {'Fecha' : 'Fecha_de_Inspeccion', 'Referencia2' : 'Referencia', 'Marca_x' : 'Marca', 'Combustible ' : 'Combustible', 'Motorización  / Tipo de Vehículo' : 'Motorización' , 'Codigo fasecolda' : 'Codigo_fasecolda', 'Valor Fasecolda Guia' : 'Valor_fasecolda', 'Valor alistamiento' : 'Valor_alistamiento', 'Comments' : 'Comentario_Pricing', 'Version_GFC' : 'Guia_fasecolda', 'Ciudad matrícula' : 'Ciudad_matrícula', 'Pricing_DataCarro' : 'Precio_DataCarro'}
 
 
+def main_estandar(df):
+    df = df.rename(columns=dic_col)
 
+    # l2 = [x for x in lista_col if x in df.columns.to_list()]
+    # print(l2)
+    df = Gamas.find_gamma(df)
+    print('************************************************************')
+    print(df.columns.to_list())
+    df = Demanda.search_demanda(df)
 
-df = pd.read_excel('brdp_24_04_2026.xlsx')
+    df = location_punish(df)
 
-df = df.rename(columns=dic_col)
+    print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+    print(df.columns.to_list())
 
-# l2 = [x for x in lista_col if x in df.columns.to_list()]
-# print(l2)
-df = Gamas.find_gamma(df)
-print('************************************************************')
-print(df.columns.to_list())
-df = Demanda.search_demanda(df)
+    df['Estado_Vehiculo'] = df.apply(precio_faseco, axis=1)
 
-df = location_punish(df)
+    df['Fecha_de_Inspeccion'] = pd.to_datetime(df['Fecha_de_Inspeccion'], format='%d/%m/%Y')
+    df['Fecha_Precio_DataCarro'] = pd.to_datetime(df['Fecha_Precio_DataCarro'], format='%d/%m/%Y')
+    # Origen_solicitud
 
-print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-print(df.columns.to_list())
+    df_brdp = df[(df['Origen_solicitud'] == 'BDRP') | (df['Origen_solicitud'] == 'Me lo Llevo')]
 
-df['Estado_Vehiculo'] = df.apply(precio_faseco, axis=1)
-
-df['Fecha_de_Inspeccion'] = pd.to_datetime(df['Fecha_de_Inspeccion'], format='%d/%m/%Y')
-df['Fecha_Precio_DataCarro'] = pd.to_datetime(df['Fecha_Precio_DataCarro'], format='%d/%m/%Y')
-# Origen_solicitud
-
-df_brdp = df[(df['Origen_solicitud'] == 'BDRP') | (df['Origen_solicitud'] == 'Me lo Llevo')]
-
-df_grc = df[df['Origen_solicitud'] == 'GRC']
+    df_grc = df[df['Origen_solicitud'] == 'GRC']
 
 
 
-server = '192.168.50.38\\DW_FZ'
-database = 'Analitica'
-schema_name = 'pri'
-table_name = 'pricing_brdp'
-DRIVER = f'{pyodbc.drivers()[3]}'
+    server = '192.168.50.38\\DW_FZ'
+    database = 'Analitica'
+    schema_name = 'pri'
+    table_name = 'pricing_brdp'
+    DRIVER = f'{pyodbc.drivers()[3]}'
 
 
-engine = create_engine(f'mssql+pyodbc://{server}/{database}?driver={DRIVER}')
-query1 = f'SELECT top(1) * FROM {database}.{schema_name}.{table_name}'
+    engine = create_engine(f'mssql+pyodbc://{server}/{database}?driver={DRIVER}')
+    query1 = f'SELECT top(1) * FROM {database}.{schema_name}.{table_name}'
 
-df_col = pd.read_sql(query1, engine)
-list_col : list = df_col.columns.to_list()
-list2 = [x for x in list_col if x in df.columns.to_list()]
-df_up = df_brdp[list2]
+    df_col = pd.read_sql(query1, engine)
+    list_col : list = df_col.columns.to_list()
+    list2 = [x for x in list_col if x in df.columns.to_list()]
+    df_up = df_brdp[list2]
 
-df_up.to_sql(table_name, engine, schema=schema_name, if_exists='append', index=False)
-print("done!!")
+    df_up.to_sql(table_name, engine, schema=schema_name, if_exists='append', index=False)
+    print("done!!")
 
-# ------------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------------------------
 
-table_name2 = 'pricing_grc'
+    table_name2 = 'pricing_grc'
 
-query1 = f'SELECT top(1) * FROM {database}.{schema_name}.{table_name2}'
+    query1 = f'SELECT top(1) * FROM {database}.{schema_name}.{table_name2}'
 
-df_col = pd.read_sql(query1, engine)
-list_col : list = df_col.columns.to_list()
-list2 = [x for x in list_col if x in df.columns.to_list()]
-df_up = df_grc[list2]
+    df_col = pd.read_sql(query1, engine)
+    list_col : list = df_col.columns.to_list()
+    list2 = [x for x in list_col if x in df.columns.to_list()]
+    df_up = df_grc[list2]
 
-df_up.to_sql(table_name2, engine, schema=schema_name, if_exists='append', index=False)
-engine.dispose()
-print("done!!")
+    df_up.to_sql(table_name2, engine, schema=schema_name, if_exists='append', index=False)
+    engine.dispose()
+    print("done!!")
 
 
+
+if __name__ == '__main__':
+
+    # cargar el excel -------------------------------------------------
+    df = pd.read_excel('brdp_24_04_2026.xlsx')
+    main_estandar(df)
