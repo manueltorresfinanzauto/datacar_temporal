@@ -62,7 +62,7 @@ def tt_randomforest(df, name_out:str='RF'):
 
     param_grid = {
         'regressor__n_estimators': [130],
-        'regressor__max_depth': [35]
+        # 'regressor__max_depth': [15]
         # 'regressor__min_samples_split': [5]
         # 'regressor__min_samples_leaf': [1, 2]
     }

@@ -12,8 +12,8 @@ def pipe(brdp: bool=True, ruta_file: str = None):
         nombre = f'brdp_{fecha_formateada}'
         df_perito = extraccion()
         df1 = main_datacarro(nombre, df_o=df_perito, ruta=False)
-        print(df1)
-        # main_estandar(df1)
+        main_estandar(df1)
+        print(df1.head())
         # print(nombre)
     else:
 
