@@ -56,9 +56,10 @@ def search_location(df):
     return df
 
 def as_blin(df):
-    dic_estado = {'Nuevos' : 0, 'Usados' : 1, 'Nuevo' : 0, 'Usado' : 1}
-    valores_validos = list(dic_estado.keys())
-    df['Blindaje'] = 0
+    dic_estado = {'Si' : 1, 'Sí' : 1, 'No' : 0, True : 1, 'Blindado' : 1}
+    valores_validos = list(dic_estado.keys()) 
+    df['Blindaje'] = df['Blindaje'].where(df['Blindaje'].isin(valores_validos)).fillna('No')
+    df['Blindaje'] = df['Blindaje'].map(dic_estado)
     return df
 
 def damage_f(df):
