@@ -102,6 +102,11 @@ pip install -r requirements.txt
 ```
 
 
+### Flujo
+
+![Flujo de los codigos](flujo_proceso.png)
+
+
 ## 🧑‍💻 Desarrollado por
 
 * Manuel Sebastián Torres Hernández
