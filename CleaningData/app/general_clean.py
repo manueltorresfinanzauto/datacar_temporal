@@ -55,6 +55,7 @@ def search_location(df):
         df['Ubicacion'] = 'Bogota'
         
     return df
+
 def as_blin(df):
     df['Blindaje'] = 0
     return df
@@ -85,9 +86,12 @@ def vitrina(df):
 
 def servicios(df):
     dic_vi = {'Particular' : 0, 'Publico' : 1, 'Público' : 1}
+    valores_validos = list(dic_vi.keys())
+
     if 'Servicio' in df.columns:
         df['Servicio'] = df['Servicio'].apply(clean_text)
-        df['Servicio'] = df['Servicio'].fillna('Particular')
+        df['Servicio'] = df['Servicio'].where(df['Servicio'].isin(valores_validos)).fillna('Particular')
+        # df['Servicio'] = df['Servicio'].fillna('Particular')
         df['Servicio_int'] = df['Servicio'].map(dic_vi)
     else:
         df['Servicio'] = 'Particular'  
@@ -97,7 +101,9 @@ def servicios(df):
 
 def estado_veh(df):
     dic_estado = {'Nuevos' : 0, 'Usados' : 1, 'Nuevo' : 0, 'Usado' : 1}
+    valores_validos = list(dic_estado.keys())
     if 'Estado_vehiculo' in df.columns:
+        df['Servicio'] = df['Servicio'].where(df['Servicio'].isin(valores_validos)).fillna('Usado')
         df['Estado_vehiculo_int'] = df['Estado_vehiculo'].map(dic_estado)
     else:
         df['Estado_vehiculo'] = 'Usados'
