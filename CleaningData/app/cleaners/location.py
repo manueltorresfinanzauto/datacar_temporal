@@ -1,7 +1,7 @@
 import numpy as np 
 from sqlalchemy import create_engine, text
 import pandas as pd
-from CleaningData.config.sqlacces import connection_str_dw_fz_g
+from CleaningData.config.sqlacces import connection_str_dw_fz
 from unidecode import unidecode
 import re
 
@@ -141,7 +141,7 @@ class Location:
     @classmethod
     def tabla_territorio(cls):
 
-        connect_str: str = connection_str_dw_fz_g
+        connect_str: str = connection_str_dw_fz
         engine = create_engine(connect_str)
         query = cls._query_sql()
         df = pd.read_sql(query, engine)
@@ -170,8 +170,12 @@ class Location:
     
     @classmethod
     def location_punish(cls, df):
-        
-        df_pu = pd.read_csv('CleaningData/app/cleaners/municipios_punishment.csv')
+        connect_str: str = connection_str_dw_fz
+        engine = create_engine(connect_str)
+        query = "select * from [Analitica].[pri].[municipios_punishment]"
+        df_pu = pd.read_sql(query, engine)
+        engine.dispose()
+        # df_pu = pd.read_csv('CleaningData/app/cleaners/municipios_punishment.csv')
     
         print(cls.remplace("BOGOTÁ, D.C."))
         df['Ubicacion_simple'] = df['Ubicacion'].apply(cls.remplace)
