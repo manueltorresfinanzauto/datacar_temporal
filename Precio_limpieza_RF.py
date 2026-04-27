@@ -28,8 +28,10 @@ def main_datacarro(nombre : str, df_o, ruta):
     df, df_cod = columns_for_pricing(path, df_or,False)
 
     # path to the pkl file that has the trained RF, it is the output file from the python Training_RF.py
-    model = joblib.load(r'C:\Users\manuel.torres\Modelos_Datacar\RF_model_V1_20_01_2026.pkl')
 
+    # cambiar la ruta -----------------------------------------------------------------------------------
+    model = joblib.load(r'C:\Users\manuel.torres\Modelos_Datacar\RF_model_V1_20_01_2026.pkl')
+    # ---------------------------------------------------------------------------------------------------
 
     predicciones = model.predict(df)
 
@@ -76,7 +78,7 @@ def main_datacarro(nombre : str, df_o, ruta):
 
     df = Motos.find_limitaciones(df)
     df['Fecha_Precio_DataCarro'] = datetime.now().date()
-    df['Version_DataCarro'] = 'V_1.5.0.07-10-2025'
+    df['Version_DataCarro'] = 'V_1.5.0.20-01-2026'
     print(df.shape)
     
     nombre_short = nombre[:-5]

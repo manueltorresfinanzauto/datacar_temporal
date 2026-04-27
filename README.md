@@ -82,7 +82,7 @@ Debido a que este repositorio tiene un submodulo se tiene que clonar primero est
 
 ### 📚 Librerias
 
-Este proyecto requiere Python 3.11 o superior y algunas librerias específicas que se pueden instalar de dos formas:
+Este proyecto requiere Python 3.11 (exactamente se usa la versión 3.11.8) o superior y algunas librerias específicas que se pueden instalar de dos formas:
 
 ####  Opción 1: Usando Conda 
 

@@ -56,6 +56,8 @@ def search_location(df):
     return df
 
 def as_blin(df):
+    dic_estado = {'Nuevos' : 0, 'Usados' : 1, 'Nuevo' : 0, 'Usado' : 1}
+    valores_validos = list(dic_estado.keys())
     df['Blindaje'] = 0
     return df
 

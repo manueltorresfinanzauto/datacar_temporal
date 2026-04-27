@@ -1,4 +1,4 @@
-from procesar.sqlacces import connection_windows_dw_fz
+from procesar.sqlacces import connection_str_dw_fz
 import pandas as pd
 from sqlalchemy import create_engine, text
 from datetime import datetime
@@ -14,7 +14,7 @@ def extraccion():
     # Imprimir la fecha en el formato dd_mm_yyyy
 
 
-    connect_str: str = connection_windows_dw_fz
+    connect_str: str = connection_str_dw_fz
     engine = create_engine(connect_str)
     query = f""" SELECT 
         A.*, 
