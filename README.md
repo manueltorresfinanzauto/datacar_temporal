@@ -111,3 +111,4 @@ pip install -r requirements.txt
 
 * Manuel Sebastián Torres Hernández
 manuel.torres@finanzauto.com.co
+manuel.torres@asisya.com

@@ -3,6 +3,7 @@ from tqdm import tqdm
 from datetime import datetime
 from sqlalchemy import create_engine, text
 import time 
+from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
 from tqdm import tqdm, tqdm_pandas
 import re
@@ -91,12 +92,13 @@ def vitrina(df):
     return df 
 
 def servicios(df):
-    dic_vi = {'Particular' : 0, 'Publico' : 1, 'Público' : 1}
+    dic_vi = {'Particular' : 0, 'Publico' : 1, 'Público' : 1, 'PARTICULAR':0, 'PUBLICO' : 1, 'PÚBLICO' : 1}
     valores_validos = list(dic_vi.keys())
 
     if 'Servicio' in df.columns:
-        df['Servicio'] = df['Servicio'].apply(clean_text)
+        
         df['Servicio'] = df['Servicio'].where(df['Servicio'].isin(valores_validos)).fillna('Particular')
+        df['Servicio'] = df['Servicio'].apply(clean_text)
         # df['Servicio'] = df['Servicio'].fillna('Particular')
         df['Servicio_int'] = df['Servicio'].map(dic_vi)
     else:
@@ -137,6 +139,7 @@ def limpiar_texto(texto):
 
 def max_cleaner(df):
     
+
     df.columns = [limpiar_texto(col) for col in df.columns]
 
      # Diccionario de mapeo de nombres de columna
@@ -151,6 +154,7 @@ def max_cleaner(df):
         'Ubicacion' : ['Ciudade matricula', 'ciudad de matricula']
     }
     print(df.shape)
+
     # Renombrar columnas basadas en los posibles nombres
     for standard_name, possible_names in column_map.items():
         for possible_name in possible_names:
@@ -159,6 +163,11 @@ def max_cleaner(df):
                 break
     print(df.columns.tolist())
     print('Remove motos')
+
+    if 'Fecha_venta' not in df.columns:
+        fecha_formateada = datetime.now().strftime('%d/%m/%Y')
+        df['Fecha_venta'] = fecha_formateada
+        df['Fecha_venta'] = pd.to_datetime(df['Fecha_venta'], errors='coerce')
 
     # df = Motos.find_motos(df)
     # df = df.dropna(subset=['Cod_fasecolda'])
