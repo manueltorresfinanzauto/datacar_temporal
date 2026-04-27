@@ -18,7 +18,6 @@ Este proceso realiza la descarga, limpieza, predicción y carga a SQL de los pre
 
 > Si en algún momento se solicitan precios para placas puntuales por fuera del ciclo semanal, simplemente repetir el mismo proceso.
 
----
 
 ### 2. Solicitud externa
 
@@ -39,6 +38,12 @@ Este proceso realiza la limpieza y predicción, y genera un archivo Excel de sal
 | `Fecha_Precio_DataCarro` |
 | `Version_DataCarro` |
 
+----
+### Modelo ML
+
+Toca es cambiar la ruta del archivo pkl, el cual se hace en la línea 33 del script en `Precio_limpieza_RF.py`
+
+----
 
 ### 🚨 Posibles errores
 
