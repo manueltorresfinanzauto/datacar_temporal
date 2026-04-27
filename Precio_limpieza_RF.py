@@ -70,9 +70,9 @@ def main_datacarro(nombre : str, df_o, ruta):
     df['Precio_Maximo'] = df['Precio_DataCarro'].apply(lambda x: x*range_var(x)[0])
     df['Precio_Minimo'] = df['Precio_DataCarro'].apply(lambda x: x*range_var(x)[1])
     # df = df.drop_duplicates()
-
+    
+    
     df['Cod_fasecolda'] = df_cod['Cod_fasecolda']
-    df['Placa'] = df_cod['Placa']
 
     df = Motos.find_limitaciones(df)
     df['Fecha_Precio_DataCarro'] = datetime.now().date()
@@ -80,8 +80,17 @@ def main_datacarro(nombre : str, df_o, ruta):
     print(df.shape)
     
     nombre_short = nombre[:-5]
-    df_s = df[['Placa', 'Precio_DataCarro', 'Precio_Maximo', 'Precio_Minimo', 'Cod_fasecolda', 'Fecha_Precio_DataCarro', 'Version_DataCarro']]
-    df.to_excel(rf'RF_{nombre_short}.xlsx')
+    
+    if ruta:
+        df_s = pd.read_excel(nombre)
+        col_final = ['Precio_DataCarro', 'Precio_Maximo', 'Precio_Minimo', 'Cod_fasecolda', 'Fecha_Precio_DataCarro', 'Version_DataCarro']
+        df_s[col_final] = df[col_final] 
+        if 'Placa' in df_cod.columns:
+            df_s['Placa'] = df_cod['Placa']
+        
+    else:
+        df_s = df[['Placa', 'Precio_DataCarro', 'Precio_Maximo', 'Precio_Minimo', 'Cod_fasecolda', 'Fecha_Precio_DataCarro', 'Version_DataCarro']]
+    df_s.to_excel(rf'RF_{nombre_short}.xlsx')
     ruta_completa = Path(f'RF_{nombre_short}.xlsx').resolve()
     print(f" Archivo guardado en: {ruta_completa}")
    

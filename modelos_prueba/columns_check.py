@@ -102,7 +102,12 @@ def columns_for_pricing(file_path, df_o = None, ruta = True):
         df = pd.read_csv(file_path)
     else: 
         df = df_o
-    df_temp = df[['Cod_fasecolda', 'Placa']].copy()
+    
+    if 'Placa' not in df.columns:
+        df_temp = df[['Cod_fasecolda']].copy()
+    else:
+        df_temp = df[['Cod_fasecolda', 'Placa']].copy()
+
     def dum_col(df):
         if 'Vitrina_venta_especial' not in df.columns:
             df['Vitrina_venta_especial'] = 0 
