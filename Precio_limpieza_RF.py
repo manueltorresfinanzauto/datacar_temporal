@@ -81,6 +81,7 @@ def main_datacarro(nombre : str, df_o, ruta):
     df['Version_DataCarro'] = 'V_1.5.0.20-01-2026'
     print(df.shape)
     
+    
     nombre_short = nombre[:-5]
     
     if ruta:
@@ -90,10 +91,16 @@ def main_datacarro(nombre : str, df_o, ruta):
         if 'Placa' in df_cod.columns:
             df_output['Placa'] = df_cod['Placa']
         
+        
+        
     else:
         df['Placa'] = df_cod['Placa']
         df_s = df[['Placa', 'Precio_DataCarro', 'Precio_Maximo', 'Precio_Minimo', 'Cod_fasecolda', 'Fecha_Precio_DataCarro', 'Version_DataCarro']]
+        df_s = df_s.rename(columns={'Cod_fasecolda': 'Cod_fasecolda_dc'})
         df_output = pd.merge(df_o, df_s, how='left', left_on=['Placa'], right_on=['Placa'])
+        df_output = df_output.rename(columns={'Fecha_venta' : 'Fecha_de_Inspeccion', 'Ubicacion': 'Ciudad_matrícula'})
+        df_output['Codigo fasecolda'] = df_output['Cod_fasecolda']
+
     df_output.to_excel(rf'RF_{nombre_short}.xlsx')
     ruta_completa = Path(f'RF_{nombre_short}.xlsx').resolve()
     print(f" Archivo guardado en: {ruta_completa}")

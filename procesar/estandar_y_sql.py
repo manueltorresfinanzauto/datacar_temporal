@@ -353,7 +353,7 @@ dic_col = {'Fecha' : 'Fecha_de_Inspeccion', 'Referencia2' : 'Referencia', 'Marca
 
 def main_estandar(df):
     df = df.rename(columns=dic_col)
-
+    print(df.columns)
     # l2 = [x for x in lista_col if x in df.columns.to_list()]
     # print(l2)
     df = Gamas.find_gamma(df)
@@ -365,7 +365,8 @@ def main_estandar(df):
 
     print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
     print(df.columns.to_list())
-
+    df['Kilometraje'] = df['Kilometraje'].astype(int)
+    df['Modelo'] = df['Modelo'].astype(int)
     df['Estado_Vehiculo'] = df.apply(precio_faseco, axis=1)
 
     df['Fecha_de_Inspeccion'] = pd.to_datetime(df['Fecha_de_Inspeccion'], format='%d/%m/%Y')
@@ -384,7 +385,8 @@ def main_estandar(df):
     table_name = 'pricing_brdp'
     DRIVER = f'{pyodbc.drivers()[3]}'
 
-
+    print('stop------------------')
+    
     engine = create_engine(connection_str_dw_fz)
     query1 = f'SELECT top(1) * FROM {database}.{schema_name}.{table_name}'
 

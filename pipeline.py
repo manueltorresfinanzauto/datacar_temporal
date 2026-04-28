@@ -21,5 +21,5 @@ def pipe(brdp: bool=True, ruta_file: str = None):
 
 
 if __name__ == '__main__':
-    # pipe()
-    pipe(brdp=False, ruta_file='libro1.xlsx')
+    pipe()
+    # pipe(brdp=False, ruta_file='libro1.xlsx')
