@@ -11,7 +11,6 @@ import pandas as pd
 from sqlalchemy import create_engine
 import pyodbc
 
-
 class Gamas:
 
     @staticmethod
@@ -386,7 +385,7 @@ def main_estandar(df):
     DRIVER = f'{pyodbc.drivers()[3]}'
 
 
-    engine = create_engine(f'mssql+pyodbc://{server}/{database}?driver={DRIVER}')
+    engine = create_engine(connection_str_dw_fz)
     query1 = f'SELECT top(1) * FROM {database}.{schema_name}.{table_name}'
 
     df_col = pd.read_sql(query1, engine)

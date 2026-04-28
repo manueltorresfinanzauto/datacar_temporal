@@ -84,15 +84,17 @@ def main_datacarro(nombre : str, df_o, ruta):
     nombre_short = nombre[:-5]
     
     if ruta:
-        df_s = pd.read_excel(nombre)
+        df_output = pd.read_excel(nombre)
         col_final = ['Precio_DataCarro', 'Precio_Maximo', 'Precio_Minimo', 'Cod_fasecolda', 'Fecha_Precio_DataCarro', 'Version_DataCarro']
-        df_s[col_final] = df[col_final] 
+        df_output[col_final] = df[col_final] 
         if 'Placa' in df_cod.columns:
-            df_s['Placa'] = df_cod['Placa']
+            df_output['Placa'] = df_cod['Placa']
         
     else:
+        df['Placa'] = df_cod['Placa']
         df_s = df[['Placa', 'Precio_DataCarro', 'Precio_Maximo', 'Precio_Minimo', 'Cod_fasecolda', 'Fecha_Precio_DataCarro', 'Version_DataCarro']]
-    df_s.to_excel(rf'RF_{nombre_short}.xlsx')
+        df_output = pd.merge(df_o, df_s, how='left', left_on=['Placa'], right_on=['Placa'])
+    df_output.to_excel(rf'RF_{nombre_short}.xlsx')
     ruta_completa = Path(f'RF_{nombre_short}.xlsx').resolve()
     print(f" Archivo guardado en: {ruta_completa}")
    
@@ -101,7 +103,7 @@ def main_datacarro(nombre : str, df_o, ruta):
     print(f"Execution time: {end - start:.2f} seconds")
 
 
-    return 
+    return df_output
 
 
 
